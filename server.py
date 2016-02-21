@@ -79,9 +79,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             else:
                 data = data.split('/')
 
-            print(data)
-            desiredHex = data[0]
-            timestamp = data[1]
+            #print(data)
+            desiredHex = data[1]
+            timestamp = data[2]
     
             redval =   float(int(desiredHex[0:2],16))
             greenval = float(int(desiredHex[2:4],16))
@@ -96,7 +96,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             red.ChangeDutyCycle(redfloat)
             grn.ChangeDutyCycle(greenfloat)
             blu.ChangeDutyCycle(bluefloat)
-            f.write(desiredHex+'/'+timestamp)
+            f.write("/"+desiredHex+'/'+timestamp)
             f.close()
 
 fail = False
