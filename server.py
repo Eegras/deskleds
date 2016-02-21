@@ -57,8 +57,8 @@ HOST_NAME = '192.168.1.167' # !!!REMEMBER TO CHANGE THIS!!!
 PORT_NUMBER = 9000 # Maybe set this to 9000.
 
 import socket
-s = socket.socket
-s = socket.socket()
+sock = socket.socket
+sock = socket.socket()
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(s):
