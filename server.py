@@ -2,6 +2,7 @@ import time
 import BaseHTTPServer
 import RPi.GPIO as G
 import time
+import Thread
 
 led1 = 18
 led2 = led1+1
