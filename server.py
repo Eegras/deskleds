@@ -90,7 +90,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
             if oldTimestamp <= timestamp:
                 sock.connect(('192.168.1.2',9000))
-                sock.sendall(desiredHex)
+                sock.send(desiredHex)
 
                 redval =   float(int(desiredHex[0:2],16))
                 greenval = float(int(desiredHex[2:4],16))
