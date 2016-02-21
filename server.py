@@ -49,6 +49,8 @@ redfloat = 0.0
 greenfloat = 0.0
 bluefloat = 0.0
 
+desiredHex = '000000'
+
 ledON = True
 
 HOST_NAME = '192.168.2.4' # !!!REMEMBER TO CHANGE THIS!!!
@@ -68,6 +70,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.wfile.write("<body><p>This is a test.</p>")
         # If someone went to "http://something.somewhere.net/foo/bar/",
         # then s.path equals "/foo/bar/".
+        desiredHex = s.path
         s.wfile.write("<p>You accessed path: %s</p>" % s.path)
         s.wfile.write("</body></html>")
 
