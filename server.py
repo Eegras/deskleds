@@ -56,6 +56,10 @@ ledON = True
 HOST_NAME = '192.168.1.167' # !!!REMEMBER TO CHANGE THIS!!!
 PORT_NUMBER = 9000 # Maybe set this to 9000.
 
+import socket
+s = socket.socket
+s = socket.socket()
+
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(s):
         s.send_response(200)
@@ -86,12 +90,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             timestamp = data[2]
 
             if oldTimestamp <= timestamp:
-                import socket
-                s = socket.socket
-                s = socket.socket()
-                s.connect(('192.168.1.2',9000))
-                s.sendall(desiredHex)
-                s.close()
+                sock.connect(('192.168.1.2',9000))
+                sock.sendall(desiredHex)
+                sock.close()
 
                 redval =   float(int(desiredHex[0:2],16))
                 greenval = float(int(desiredHex[2:4],16))
