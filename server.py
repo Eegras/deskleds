@@ -77,10 +77,11 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             s.send_header("Access-Control-Allow-Origin","http://192.168.1.167")
             s.end_headers()
     
+            print(data)
             if not s.path[0:4] == '/get':
                 data = s.path.split('/')
 
-            #print(data)
+            print(data)
             desiredHex = data[1]
             timestamp = data[2]
 
