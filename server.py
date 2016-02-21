@@ -75,19 +75,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.wfile.write("<p>You accessed path: %s</p>" % s.path)
         s.wfile.write("</body></html>")
 
-def doServer():
-    server_class = BaseHTTPServer.HTTPServer
-    httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
-    print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    httpd.server_close()
-    print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)
+        desiredHex = s.path.replace("/","")
 
-def doLights():
-    while (True):    
         redval =   float(int(desiredHex[0:2],16))
         greenval = float(int(desiredHex[2:4],16))
         blueval =  float(int(desiredHex[4:6],16))
@@ -100,11 +89,12 @@ def doLights():
         grn.ChangeDutyCycle(greenfloat)
         blu.ChangeDutyCycle(bluefloat)
 
-serverThread = Thread(target=doServer,name="Server Thread")
-lightsThread = Thread(target=doLights,name="Lights Thread")
-
-serverThread.start()
-lightsThread.start()
-
-serverThread.join()
-lightsThread.join()
+server_class = BaseHTTPServer.HTTPServer
+httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
+print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
+try:
+    httpd.serve_forever()
+except KeyboardInterrupt:
+    pass
+httpd.server_close()
+print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)
