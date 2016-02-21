@@ -76,7 +76,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     
             if not s.path[0:4] == '/get':
                 data = s.path.split('/')
-            
+            else:
+                data = data.split('/')
+                
             desiredHex = data[0]
             timestamp = data[1]
     
