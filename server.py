@@ -53,7 +53,7 @@ bluefloat = 0.0
 
 ledON = True
 
-HOST_NAME = '192.168.2.4' # !!!REMEMBER TO CHANGE THIS!!!
+HOST_NAME = '192.168.1.167' # !!!REMEMBER TO CHANGE THIS!!!
 PORT_NUMBER = 9000 # Maybe set this to 9000.
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -65,17 +65,20 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(s):
         if not s.path == '/favicon.ico':
             f=open('currentColor.txt','r+')
-            desiredHex = f.read()
+            data = f.read()
             f.truncate()
             f.seek(0)
             """Respond to a GET request."""
             s.send_response(200)
             s.send_header("Content-type", "text/html")
-            s.send_header("Access-Control-Allow-Origin","http://192.168.2.4")
+            s.send_header("Access-Control-Allow-Origin","http://192.168.1.167")
             s.end_headers()
     
             if not s.path[0:4] == '/get':
-                desiredHex = s.path.replace("/","")
+                data = s.path.split('/')
+            
+            desiredHex = data[0]
+            timestamp = data[1]
     
             redval =   float(int(desiredHex[0:2],16))
             greenval = float(int(desiredHex[2:4],16))
@@ -90,7 +93,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             red.ChangeDutyCycle(redfloat)
             grn.ChangeDutyCycle(greenfloat)
             blu.ChangeDutyCycle(bluefloat)
-            f.write(desiredHex)
+            f.write(desiredHex+'/'+timestamp)
             f.close()
 
 fail = False
