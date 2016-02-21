@@ -99,8 +99,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 red.ChangeDutyCycle(redfloat)
                 grn.ChangeDutyCycle(greenfloat)
                 blu.ChangeDutyCycle(bluefloat)
-                f.write("/"+desiredHex+'/'+timestamp)
-                f.close()
+                
+            f.write("/"+desiredHex+'/'+timestamp)
+            f.close()
 
 fail = False
 server_class = BaseHTTPServer.HTTPServer
