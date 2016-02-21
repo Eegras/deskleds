@@ -60,7 +60,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(s):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
-        s.send_header("Access-Control-Allow-Origin","http://192.168.2.4")
+        s.send_header("Access-Control-Allow-Origin","http://192.168.1.167")
         s.end_headers()
     def do_GET(s):
         if not s.path == '/favicon.ico':
@@ -98,10 +98,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 fail = False
 server_class = BaseHTTPServer.HTTPServer
-try:
-    httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
-except:
-    fail = True
+
+httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
 
 if not fail:
     print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
