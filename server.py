@@ -89,7 +89,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 import socket
                 s = socket.socket
                 s = socket.socket()
-                s.connect(('Chernobyl',9000))
+                s.connect(('192.168.1.2',9000))
                 s.sendall(desiredHex)
                 s.close()
 
