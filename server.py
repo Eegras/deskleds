@@ -58,7 +58,6 @@ PORT_NUMBER = 9000 # Maybe set this to 9000.
 
 import socket
 sock = socket.socket()
-sock.connect(('192.168.1.2',9000))
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(s):
@@ -90,6 +89,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             timestamp = data[2]
 
             if oldTimestamp <= timestamp:
+                sock.connect(('192.168.1.2',9000))
                 sock.sendall(desiredHex)
 
                 redval =   float(int(desiredHex[0:2],16))
