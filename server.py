@@ -66,6 +66,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         if not s.path == '/favicon.ico':
             f=open('currentColor.txt','r+')
             data = f.read()
+            data = data.split('/')
+            oldHex = data[1]
+            oldTimestamp = data[2]
             f.truncate()
             f.seek(0)
             """Respond to a GET request."""
@@ -76,28 +79,27 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     
             if not s.path[0:4] == '/get':
                 data = s.path.split('/')
-            else:
-                data = data.split('/')
 
             #print(data)
             desiredHex = data[1]
             timestamp = data[2]
-    
-            redval =   float(int(desiredHex[0:2],16))
-            greenval = float(int(desiredHex[2:4],16))
-            blueval =  float(int(desiredHex[4:6],16))
-    
-            redfloat = float(redval/255)*100
-            greenfloat = float(greenval/255)*100
-            bluefloat = float(blueval/255)*100
-    
-            s.wfile.write('{"red": %f, "grn": %f, "blu": %f}' % ((redfloat*255), (greenfloat*255), (bluefloat*255)))
-            
-            red.ChangeDutyCycle(redfloat)
-            grn.ChangeDutyCycle(greenfloat)
-            blu.ChangeDutyCycle(bluefloat)
-            f.write("/"+desiredHex+'/'+timestamp)
-            f.close()
+
+            if oldTimestamp <= timestamp:
+                redval =   float(int(desiredHex[0:2],16))
+                greenval = float(int(desiredHex[2:4],16))
+                blueval =  float(int(desiredHex[4:6],16))
+        
+                redfloat = float(redval/255)*100
+                greenfloat = float(greenval/255)*100
+                bluefloat = float(blueval/255)*100
+        
+                s.wfile.write('{"red": %f, "grn": %f, "blu": %f}' % ((redfloat*255), (greenfloat*255), (bluefloat*255)))
+                
+                red.ChangeDutyCycle(redfloat)
+                grn.ChangeDutyCycle(greenfloat)
+                blu.ChangeDutyCycle(bluefloat)
+                f.write("/"+desiredHex+'/'+timestamp)
+                f.close()
 
 fail = False
 server_class = BaseHTTPServer.HTTPServer
