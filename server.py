@@ -86,6 +86,13 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             timestamp = data[2]
 
             if oldTimestamp <= timestamp:
+                import socket
+                s = socket.socket
+                s = socket.socket()
+                s.connect(('Chernobyl',9000))
+                s.sendall(desiredHex)
+                s.close()
+
                 redval =   float(int(desiredHex[0:2],16))
                 greenval = float(int(desiredHex[2:4],16))
                 blueval =  float(int(desiredHex[4:6],16))
