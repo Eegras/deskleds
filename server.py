@@ -78,7 +78,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 data = s.path.split('/')
             else:
                 data = data.split('/')
-                
+
+            print(data)
             desiredHex = data[0]
             timestamp = data[1]
     
