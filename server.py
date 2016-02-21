@@ -105,6 +105,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 red.ChangeDutyCycle(redfloat)
                 grn.ChangeDutyCycle(greenfloat)
                 blu.ChangeDutyCycle(bluefloat)
+                sock.close()
                 
             f.write("/"+desiredHex+'/'+timestamp)
             f.close()
