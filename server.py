@@ -50,7 +50,6 @@ redfloat = 0.0
 greenfloat = 0.0
 bluefloat = 0.0
 
-desiredHex = '000000'
 
 ledON = True
 
@@ -61,40 +60,51 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(s):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
+        s.send_header("Access-Control-Allow-Origin","http://192.168.2.4")
         s.end_headers()
     def do_GET(s):
-        """Respond to a GET request."""
-        s.send_response(200)
-        s.send_header("Content-type", "text/html")
-        s.end_headers()
-        s.wfile.write("<html><head><title>Title goes here.</title></head>")
-        s.wfile.write("<body><p>This is a test.</p>")
-        # If someone went to "http://something.somewhere.net/foo/bar/",
-        # then s.path equals "/foo/bar/".
-        desiredHex = s.path.replace("/","")
-        s.wfile.write("<p>You accessed path: %s</p>" % s.path)
-        s.wfile.write("</body></html>")
-
-        desiredHex = s.path.replace("/","")
-
-        redval =   float(int(desiredHex[0:2],16))
-        greenval = float(int(desiredHex[2:4],16))
-        blueval =  float(int(desiredHex[4:6],16))
+        if not s.path == '/favicon.ico':
+            f=open('currentColor.txt','r+')
+            desiredHex = f.read()
+            f.truncate()
+            f.seek(0)
+            """Respond to a GET request."""
+            s.send_response(200)
+            s.send_header("Content-type", "text/html")
+            s.send_header("Access-Control-Allow-Origin","http://192.168.2.4")
+            s.end_headers()
     
-        redfloat = float(redval/255)*100
-        greenfloat = float(greenval/255)*100
-        bluefloat = float(blueval/255)*100
+            if not s.path[0:4] == '/get':
+                desiredHex = s.path.replace("/","")
     
-        red.ChangeDutyCycle(redfloat)
-        grn.ChangeDutyCycle(greenfloat)
-        blu.ChangeDutyCycle(bluefloat)
+            redval =   float(int(desiredHex[0:2],16))
+            greenval = float(int(desiredHex[2:4],16))
+            blueval =  float(int(desiredHex[4:6],16))
+    
+            redfloat = float(redval/255)*100
+            greenfloat = float(greenval/255)*100
+            bluefloat = float(blueval/255)*100
+    
+            s.wfile.write('{"red": %f, "grn": %f, "blu": %f}' % ((redfloat*255), (greenfloat*255), (bluefloat*255)))
+            
+            red.ChangeDutyCycle(redfloat)
+            grn.ChangeDutyCycle(greenfloat)
+            blu.ChangeDutyCycle(bluefloat)
+            f.write(desiredHex)
+            f.close()
 
+fail = False
 server_class = BaseHTTPServer.HTTPServer
-httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
-print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
 try:
-    httpd.serve_forever()
-except KeyboardInterrupt:
-    pass
-httpd.server_close()
-print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)
+    httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
+except:
+    fail = True
+
+if not fail:
+    print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    httpd.server_close()
+    print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)
